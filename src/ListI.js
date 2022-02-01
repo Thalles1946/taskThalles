@@ -66,7 +66,9 @@ export const ListI = () => {
                 );
               }
             })}
-          {Boolean(list.length === 0) && <h4>Não há tarefas no momento</h4>}
+          {Boolean(list.length === 0) && (
+            <h1>Não há tarefas incompletas no momento</h1>
+          )}
 
           <Button
             onClick={back}

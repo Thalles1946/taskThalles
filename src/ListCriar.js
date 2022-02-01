@@ -29,18 +29,19 @@ export const ListCriar = () => {
     e.preventDefault(); // Prevents default refresh by the browser
     console.log(Formik);
     console.log(data);
-
-    setHome(true);
-    setList((prevTasks) => [
-      ...prevTasks,
-      {
-        name: data.TaskName,
-        data: data.Data,
-        Time: data.Time,
-        complete: true,
-        key: Math.random,
-      },
-    ]);
+    if (data.TaskName !== "" && data.Data !== "" && data.Time !== "") {
+      setHome(true);
+      setList((prevTasks) => [
+        ...prevTasks,
+        {
+          name: data.TaskName,
+          data: data.Data,
+          Time: data.Time,
+          complete: false,
+          key: Math.random,
+        },
+      ]);
+    }
   }
 
   const [Home, setHome] = useState(false);
