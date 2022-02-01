@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import * as Yup from "yup";
-import List from "./List";
+import List from "./Listing";
 import { Formik, Form } from "formik";
 import { TextField, Button, Box } from "@mui/material";
-import { func } from "prop-types";
+import { init } from "@emailjs/browser";
+import emailjs from "@emailjs/browser";
+import { __esModule } from "styled-components";
+import { ListContext } from "./List";
 
 export const ListCriar = () => {
+  init("user_Ll0iLP5gTsJskBCOWtvcU");
+  const [data, setData] = useState([{}]);
+
+  const [list, setList] = useContext(ListContext);
+
   const Task = Yup.object({
     TaskName: Yup.string().required("Required"),
     Data: Yup.date().required("Required"),
@@ -15,6 +23,24 @@ export const ListCriar = () => {
 
   function back() {
     setHome(true);
+  }
+
+  function Submit(e) {
+    e.preventDefault(); // Prevents default refresh by the browser
+    console.log(Formik);
+    console.log(data);
+
+    setHome(true);
+    setList((prevTasks) => [
+      ...prevTasks,
+      {
+        name: data.TaskName,
+        data: data.Data,
+        Time: data.Time,
+        complete: true,
+        key: Math.random,
+      },
+    ]);
   }
 
   const [Home, setHome] = useState(false);
@@ -39,16 +65,14 @@ export const ListCriar = () => {
           onSubmit={(values) => {
             console.log(values);
             console.log(Formik);
-            setHome(true);
           }}
         >
           {(formik) => (
             <div>
               <h1 style={{ fontSize: "28px" }}>CRIE UMA NOVA TAREFA</h1>
-              {console.log(formik.values)}
               <Form sx={{ width: "90%" }} onSubmit={formik.handleSubmit}>
                 <TextField
-                  sx={{ width: "90%" }}
+                  sx={{ width: "90%", marginBottom: "20px" }}
                   onChange={formik.handleChange}
                   value={formik.values.TaskName}
                   label="Task Name"
@@ -56,27 +80,28 @@ export const ListCriar = () => {
                   type="text"
                 />
                 <TextField
-                  sx={{ width: "90%" }}
+                  sx={{ width: "90%", marginBottom: "20px" }}
                   onChange={formik.handleChange}
                   value={formik.values.Data}
                   name="Data"
                   type="date"
                 />
                 <TextField
-                  sx={{ width: "90%" }}
+                  sx={{ width: "90%", marginBottom: "20px" }}
                   name="Time"
                   onChange={formik.handleChange}
                   value={formik.values.Time}
                   type="time"
                 />
                 <Button
-                  onClick={back}
+                  onClick={Submit}
                   variant="outlined"
                   sx={{ margin: "10%" }}
                   type="submit"
                 >
                   Registrar
                 </Button>
+                {setData(formik.values)}
                 <Button
                   onClick={back}
                   variant="outlined"
@@ -92,6 +117,6 @@ export const ListCriar = () => {
       </Box>
     );
   } else {
-    return <List />;
+    return <List list={Formik.values} />;
   }
 };

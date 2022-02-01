@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Context } from "react";
 import ListSubheader from "@mui/material/ListSubheader";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -8,16 +9,18 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import DraftsIcon from "@mui/icons-material/Drafts";
 import SendIcon from "@mui/icons-material/Send";
 import { ListCriar } from "./ListCriar";
-import { ListI } from "./ListComp";
+import { ListI } from "./ListI";
 import { ListDone } from "./ListDone";
 
-export default function NestedList() {
+export default function NestedList({ list }) {
   const [pageNumber, setPageNumber] = React.useState(0);
-
+  const tasks = React.createContext([{}]);
   const tarefaC = () => {
     setPageNumber(1);
   };
-
+  if (list !== undefined) {
+    console.log(list);
+  }
   const tarefaIn = () => {
     setPageNumber(2);
   };
@@ -31,10 +34,12 @@ export default function NestedList() {
       <div>
         <List
           sx={{
-            alignItems: "end",
+            display: "grid",
+            alignItems: "center",
             justifyContent: "center",
-            width: "100%",
-            maxWidth: 360,
+            width: "360px",
+            maxWidth: "360px",
+            height: "411px",
             bgcolor: "background.paper",
           }}
           component="nav"
@@ -67,10 +72,10 @@ export default function NestedList() {
       </div>
     );
   }
-  if (pageNumber === 3) {
+  if (pageNumber === 2) {
     return <ListI />;
   }
-  if (pageNumber === 2) {
+  if (pageNumber === 3) {
     return <ListDone />;
   }
   if (pageNumber === 1) {
